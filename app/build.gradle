@@ -1,0 +1,143 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+Properties properties = new Properties()
+InputStream is = project.rootProject.file('local.properties').newDataInputStream()
+properties.load(is)
+
+android {
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+
+    compileSdkVersion globalConfiguration["compileSdkVersion"]
+    buildToolsVersion globalConfiguration["buildToolsVersion"]
+
+    def gitCommitCount = Integer.parseInt("git rev-list --count HEAD".execute().text.trim())
+
+    defaultConfig {
+        applicationId "me.xana.fans"
+        minSdkVersion globalConfiguration["minSdkVersion"]
+        targetSdkVersion globalConfiguration["targetSdkVersion"]
+        versionName "2.0.0"
+        versionCode gitCommitCount
+
+        multiDexEnabled true
+        archivesBaseName = "fans2-v_${versionName}_${versionCode}"
+        buildConfigField "long", "BUILD_TIMESTAMP", System.currentTimeMillis() + "L"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        vectorDrawables.useSupportLibrary = true
+
+        flavorDimensions "debug", "beta", "release"
+    }
+
+    applicationVariants.all { variant ->
+        if (variant.buildType.name == 'beta' ||
+                variant.buildType.name == 'release') {
+            variant.outputs.all { output ->
+                output.setVersionCodeOverride(gitCommitCount)
+            }
+        }
+    }
+
+    signingConfigs {
+        def key_store = properties.getProperty('RELEASE_STORE_FILE')
+        def key_alias = properties.getProperty('RELEASE_KEY_ALIAS')
+        def key_keyPassword = properties.getProperty('RELEASE_KEY_PASSWORD')
+        def key_storePassword = properties.getProperty('RELEASE_STORE_PASSWORD')
+
+        release {
+            storeFile file(key_store)
+            storePassword key_storePassword
+            keyAlias key_alias
+            keyPassword key_keyPassword
+        }
+    }
+
+    buildTypes {
+        def app_key = properties.getProperty("FANS_APP_KEY")
+        def app_secret = properties.getProperty("FANS_APP_SECRET")
+        debug {
+            defaultConfig {
+                minSdkVersion 21
+            }
+
+            buildConfigField "boolean", "IS_RELEASE", "false"
+            buildConfigField "boolean", "IS_BETA", "false"
+
+            buildConfigField "String", "APP_KEY", "\"$app_key\""
+            buildConfigField "String", "APP_SECRET", "\"$app_secret\""
+
+            applicationIdSuffix '.debug'
+            versionNameSuffix "-debug"
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.release
+            debuggable true
+        }
+
+        beta.initWith(debug)
+        beta {
+            defaultConfig {
+                minSdkVersion globalConfiguration["minSdkVersion"]
+            }
+
+            buildConfigField "boolean", "IS_BETA", "true"
+
+            applicationIdSuffix '.beta'
+            versionNameSuffix "-beta"
+
+            minifyEnabled false
+            debuggable false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            matchingFallbacks = ["debug"]
+        }
+
+        release.initWith(beta)
+        release {
+            applicationIdSuffix ''
+            versionNameSuffix ""
+            buildConfigField "boolean", "IS_RELEASE", "true"
+            buildConfigField "boolean", "IS_BETA", "false"
+            matchingFallbacks = ["debug", "beta"]
+        }
+    }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LGPL2.1'
+        exclude '.readme'
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+    productFlavors {
+
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.0.0-rc01'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+}
