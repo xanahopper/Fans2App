@@ -9,7 +9,7 @@ ext {
             supportVersion   : "27.1.1",
 
             androidxSupportVersion: "1.0.0-rc01",
-            androidxArchVersion: "2.0.0-beta01"
+            androidxArchVersion: "2.0.0-rc01"
     ]
 
     dependencies = [
