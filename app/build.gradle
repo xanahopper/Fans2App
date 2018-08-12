@@ -8,18 +8,20 @@ Properties properties = new Properties()
 InputStream is = project.rootProject.file('local.properties').newDataInputStream()
 properties.load(is)
 
-android {
-    def globalConfiguration = rootProject.extensions.getByName("ext")
+def ext = rootProject.extensions.findByName("ext")
+def versions = ext["android"]
 
-    compileSdkVersion globalConfiguration["compileSdkVersion"]
-    buildToolsVersion globalConfiguration["buildToolsVersion"]
+android {
+
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
 
     def gitCommitCount = Integer.parseInt("git rev-list --count HEAD".execute().text.trim())
 
     defaultConfig {
         applicationId "me.xana.fans"
-        minSdkVersion globalConfiguration["minSdkVersion"]
-        targetSdkVersion globalConfiguration["targetSdkVersion"]
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
         versionName "2.0.0"
         versionCode gitCommitCount
 
@@ -83,7 +85,7 @@ android {
         beta.initWith(debug)
         beta {
             defaultConfig {
-                minSdkVersion globalConfiguration["minSdkVersion"]
+                minSdkVersion versions["minSdkVersion"]
             }
 
             buildConfigField "boolean", "IS_BETA", "true"
@@ -131,12 +133,32 @@ android {
     productFlavors {
 
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
+    def dependencies = ext["dependencies"]
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.0.0-rc01'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // constraintLayout
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
+    // Support Library
+    implementation "androidx.appcompat:appcompat:$versions.androidxSupportVersion"
+    // LifeCycle
+    implementation "androidx.lifecycle:lifecycle-extensions:$versions.androidxArchVersion"
+    kapt "androidx.lifecycle:lifecycle-compiler:$versions.androidxArchVersion"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$versions.androidxArchVersion"
+    // Room
+    implementation "androidx.room:room-runtime:$versions.androidxArchVersion"
+    kapt "androidx.room:room-compiler:$versions.androidxArchVersion"
+    // Paging
+    implementation "androidx.paging:paging-runtime:$versions.androidxArchVersion"
+    // Test
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
