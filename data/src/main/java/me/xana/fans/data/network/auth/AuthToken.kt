@@ -8,7 +8,7 @@ import android.os.Parcelable
  * Author:   Xana Hopper(xanahopper@163.com)
  * Created:  2018/8/12 17:03
  */
-data class OAuthToken(val token: String? = null, val secret: String? = null) : Parcelable {
+data class AuthToken(val token: String? = null, val secret: String? = null) : Parcelable {
     val isNull: Boolean
         get() = (token == null && secret == null)
 
@@ -25,7 +25,7 @@ data class OAuthToken(val token: String? = null, val secret: String? = null) : P
     }
 
     companion object {
-        fun from(response: String?): OAuthToken? {
+        fun from(response: String?): AuthToken? {
             val tokens = response?.split("&")
             var t: String? = null
             var s: String? = null
@@ -36,13 +36,13 @@ data class OAuthToken(val token: String? = null, val secret: String? = null) : P
                     s = it.split("=")[1].trim()
                 }
             }
-            return OAuthToken(t, s)
+            return AuthToken(t, s)
         }
 
         @JvmField
-        val CREATOR: Parcelable.Creator<OAuthToken> = object : Parcelable.Creator<OAuthToken> {
-            override fun createFromParcel(source: Parcel): OAuthToken = OAuthToken(source)
-            override fun newArray(size: Int): Array<OAuthToken?> = arrayOfNulls(size)
+        val CREATOR: Parcelable.Creator<AuthToken> = object : Parcelable.Creator<AuthToken> {
+            override fun createFromParcel(source: Parcel): AuthToken = AuthToken(source)
+            override fun newArray(size: Int): Array<AuthToken?> = arrayOfNulls(size)
         }
     }
 }

@@ -3,6 +3,7 @@ package me.xana.fans.data.model.account
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import me.xana.fans.data.network.auth.AuthToken
 
 /**
  * Project:  Fans2App
@@ -21,4 +22,7 @@ data class Account(@PrimaryKey(autoGenerate = true) var id: Long?,
                    @ColumnInfo var displayName: String? = null,
                    @ColumnInfo var displayComment: String? = null,
                    @ColumnInfo var displayAvatar: String? = null,
-                   @ColumnInfo var orderPriority: Int = -1)
+                   @ColumnInfo var orderPriority: Int = -1) {
+    val token: AuthToken
+        get() = AuthToken(authToken, authSecret)
+}
