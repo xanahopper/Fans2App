@@ -1,5 +1,6 @@
 package me.xana.fans.data.network.okhttp
 
+import me.xana.fans.data.network.auth.ClientAuthProvider
 import okhttp3.OkHttpClient
 
 /**
