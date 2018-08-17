@@ -15,7 +15,7 @@ abstract class ClientAuthProvider(val authType: AuthType,
                                   val clientProvider: ClientProvider,
                                   var authToken: AuthToken?) : Interceptor {
 
-    protected open val headerKey: String = "authentication"
+    protected open val headerKey: String = "Authorization"
     abstract val authValue: String
     abstract val requestValue: String
 
@@ -24,8 +24,8 @@ abstract class ClientAuthProvider(val authType: AuthType,
 
     var authUserName: String? = null
     var authPassword: String? = null
-    var method: String = "GET"
-    var requestUrl: String = ""
+    private var method: String = "GET"
+    private var requestUrl: String = ""
 
     override fun intercept(chain: Interceptor.Chain?): Response? {
         return chain?.let { c ->

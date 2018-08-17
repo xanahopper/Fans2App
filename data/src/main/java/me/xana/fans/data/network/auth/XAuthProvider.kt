@@ -32,9 +32,11 @@ class XAuthProvider(clientProvider: ClientProvider, authToken: AuthToken?)
                     RequestParam("x_auth_mode", "client_auth")
             )
             val spec = getSecretSpec(clientProvider, null)
-            val signature = getSignature("$method&${encode(constructRequestURL(requestUrl))}&${encode(alignParams(oauthHeaderParams))}", spec)
+            val base = "$method&${encode(constructRequestURL(requestUrl))}&${encode(alignParams(oauthHeaderParams))}"
+            val signature = getSignature(base, spec)
             oauthHeaderParams.add(RequestParam("oauth_signature", signature))
-            return "OAuth ${encodeParameters(oauthHeaderParams)}"
+            val auth = encodeParameters(oauthHeaderParams, ",", true)
+            return "OAuth $auth"
         }
 
     override val requestValue: String
@@ -56,7 +58,8 @@ class XAuthProvider(clientProvider: ClientProvider, authToken: AuthToken?)
             val spec = getSecretSpec(clientProvider, authToken)
             val signature = getSignature("$method&${encode(constructRequestURL(requestUrl))}&${encode(alignParams(oauthHeaderParams))}", spec)
             oauthHeaderParams.add(RequestParam("oauth_signature", signature))
-            return "OAuth ${encodeParameters(oauthHeaderParams)}"
+            val auth = encodeParameters(oauthHeaderParams, ",", true)
+            return "OAuth $auth"
         }
 
     private fun getSignature(data: String, spec: SecretKeySpec): String {
