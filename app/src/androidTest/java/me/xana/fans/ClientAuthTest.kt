@@ -2,6 +2,7 @@ package me.xana.fans
 
 import androidx.test.runner.AndroidJUnit4
 import me.xana.fans.data.network.auth.AuthServiceFactory
+import me.xana.fans.data.network.auth.AuthServiceType
 import me.xana.fans.data.network.auth.ClientProvider
 import org.junit.Assert
 import org.junit.Test
@@ -22,7 +23,7 @@ class ClientAuthTest {
         val AUTH_URL = "http://fanfou.com/oauth/access_token/"
         val REQUEST_URL = "http://api.fanfou.com/"
         val clientProvider = ClientProvider(BuildConfig.APP_KEY, BuildConfig.APP_SECRET, AUTH_URL, REQUEST_URL)
-        val authService = AuthServiceFactory.createAuthService(clientProvider)
+        val authService = AuthServiceFactory.createAuthService(AuthServiceType.Fanfou, clientProvider)
 
         authService.authWithUserName("xanahopper@163.com", "BambooLeaf*(!@!!")
                 .subscribe(

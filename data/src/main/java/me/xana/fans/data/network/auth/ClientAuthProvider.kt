@@ -11,7 +11,7 @@ import java.net.URLEncoder
  * Author:   Xana Hopper(xanahopper@163.com)
  * Created:  2018/8/13 00:00
  */
-abstract class ClientAuthProvider(val authType: AuthType,
+abstract class ClientAuthProvider(val clientAuthType: ClientAuthType,
                                   val clientProvider: ClientProvider,
                                   var authToken: AuthToken?) : Interceptor {
 
@@ -24,8 +24,8 @@ abstract class ClientAuthProvider(val authType: AuthType,
 
     var authUserName: String? = null
     var authPassword: String? = null
-    private var method: String = "GET"
-    private var requestUrl: String = ""
+    protected var method: String = "GET"
+    protected var requestUrl: String = ""
 
     override fun intercept(chain: Interceptor.Chain?): Response? {
         return chain?.let { c ->

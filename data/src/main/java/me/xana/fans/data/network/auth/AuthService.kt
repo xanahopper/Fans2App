@@ -13,7 +13,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
  */
 abstract class AuthService(protected val clientProvider: ClientProvider, authBaseUrl: String) {
 
-    protected val authProvider by lazy { ClientAuthProviderFactory.createClientAuthProvider(AuthType.XAuth, clientProvider, null) }
+    protected val authProvider by lazy { ClientAuthProviderFactory.createClientAuthProvider(ClientAuthType.XAuth, clientProvider, null) }
     protected val httpClient by lazy { HttpClientFactory.createAuthClient(HttpClientFactory.CLIENT_FANFOU, authProvider) }
     protected val retrofit by lazy {
         Retrofit.Builder()

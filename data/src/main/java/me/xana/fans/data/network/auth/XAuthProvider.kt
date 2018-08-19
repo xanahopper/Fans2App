@@ -15,7 +15,7 @@ import javax.crypto.spec.SecretKeySpec
  * Created:  2018/8/15 22:59
  */
 class XAuthProvider(clientProvider: ClientProvider, authToken: AuthToken?)
-    : ClientAuthProvider(AuthType.XAuth, clientProvider, authToken) {
+    : ClientAuthProvider(ClientAuthType.XAuth, clientProvider, authToken) {
 
     override val authValue: String
         get() {

@@ -17,7 +17,7 @@ import retrofit2.http.GET
 class FanfouAuthService(clientProvider: ClientProvider)
     : AuthService(clientProvider, authBaseUrl) {
 
-    val authAPI by lazy { retrofit.create(AuthAPI::class.java) }
+    private val authAPI by lazy { retrofit.create(AuthAPI::class.java) }
 
     override fun authWithUserName(userName: String, password: String): Observable<Result<AuthToken>> {
         authProvider.authUserName = userName

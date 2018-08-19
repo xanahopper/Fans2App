@@ -20,7 +20,7 @@ data class Account(@PrimaryKey(autoGenerate = true) var id: Long?,
                    @ColumnInfo var authSecret: String? = null,
                    @ColumnInfo var activeState: Int = 0,
                    @ColumnInfo var displayName: String? = null,
-                   @ColumnInfo var displayComment: String? = null,
+                   @ColumnInfo var displayDescription: String? = null,
                    @ColumnInfo var displayAvatar: String? = null,
                    @ColumnInfo var orderPriority: Int = -1) {
     val token: AuthToken

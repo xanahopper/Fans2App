@@ -9,11 +9,13 @@ import kotlin.reflect.KProperty
  * Created:  2018/8/16 21:38
  */
 class Weak<T : Any>(initializer: () -> T?) {
-    var weakReference = WeakReference<T?>(initializer())
+    private var weakReference = WeakReference(initializer())
 
     constructor():this({
         null
     })
+
+    constructor(value: T?) : this({ value })
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): T? {
         return weakReference.get()

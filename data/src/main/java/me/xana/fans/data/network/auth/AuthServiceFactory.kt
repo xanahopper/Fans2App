@@ -6,7 +6,8 @@ package me.xana.fans.data.network.auth
  * Created:  2018/8/16 21:12
  */
 object AuthServiceFactory {
-    fun createAuthService(clientProvider: ClientProvider): AuthService {
-        return FanfouAuthService(clientProvider)
-    }
+    fun createAuthService(authServiceType: AuthServiceType,clientProvider: ClientProvider): AuthService =
+            when (authServiceType) {
+                AuthServiceType.Fanfou -> FanfouAuthService(clientProvider)
+            }
 }

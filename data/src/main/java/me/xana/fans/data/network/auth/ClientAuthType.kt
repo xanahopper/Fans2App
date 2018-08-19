@@ -5,7 +5,7 @@ package me.xana.fans.data.network.auth
  * Author:   Xana Hopper(xanahopper@163.com)
  * Created:  2018/8/15 22:58
  */
-enum class AuthType {
+enum class ClientAuthType {
     BasicAuth,
     XAuth,
     OAuth1
