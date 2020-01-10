@@ -12,17 +12,19 @@ import me.xana.fans.data.network.auth.AuthToken
  */
 
 @Entity(tableName = "account")
-data class Account(@PrimaryKey(autoGenerate = true) var id: Long?,
-                   @ColumnInfo var apiName: String,
-                   @ColumnInfo var userName: String,
-                   @ColumnInfo var userId: String = "",
-                   @ColumnInfo var authToken: String? = null,
-                   @ColumnInfo var authSecret: String? = null,
-                   @ColumnInfo var activeState: Int = 0,
-                   @ColumnInfo var displayName: String? = null,
-                   @ColumnInfo var displayDescription: String? = null,
-                   @ColumnInfo var displayAvatar: String? = null,
-                   @ColumnInfo var orderPriority: Int = -1) {
+data class Account(
+    @PrimaryKey(autoGenerate = true) var id: Long?,
+    @ColumnInfo var apiName: String,
+    @ColumnInfo var userName: String,
+    @ColumnInfo var userId: String = "",
+    @ColumnInfo var authToken: String? = null,
+    @ColumnInfo var authSecret: String? = null,
+    @ColumnInfo var activeState: Int = 0,
+    @ColumnInfo var displayName: String? = null,
+    @ColumnInfo var displayDescription: String? = null,
+    @ColumnInfo var displayAvatar: String? = null,
+    @ColumnInfo var orderPriority: Int = -1
+) {
     val token: AuthToken
         get() = AuthToken(authToken, authSecret)
 }

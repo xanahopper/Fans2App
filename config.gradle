@@ -5,11 +5,11 @@ ext {
             minSdkVersion    : 19,
             targetSdkVersion : 28,
 
-            buildToolsVersion: '28.0.2',
-            supportVersion   : "27.1.1",
+            buildToolsVersion: '28.0.3',
+            supportVersion   : "28.0.0",
 
-            androidxSupportVersion: "1.0.0-rc01",
-            androidxArchVersion: "2.0.0-rc01"
+            androidxSupportVersion: "1.0.0",
+            androidxArchVersion: "2.0.0"
     ]
 
     dependencies = [

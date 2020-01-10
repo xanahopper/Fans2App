@@ -12,14 +12,15 @@ import java.util.*
  * Created:  2018/8/19 14:02
  */
 @Entity(tableName = "user")
-data class User(@PrimaryKey(autoGenerate = false) val id: String,
-                @ColumnInfo val name: String,
-                @ColumnInfo val screen_name: String,
-                @ColumnInfo val unique_id: String,
-                @ColumnInfo val isProtected: Boolean,
-                @ColumnInfo val createdAt: Date,
-                @ColumnInfo var following: Boolean = false,
-                @ColumnInfo var notifications: Boolean = false,
-
-                @Embedded var info: UserInfo,
-                @Embedded var profile: UserProfile)
+data class User(
+    @PrimaryKey(autoGenerate = false) val id: String,
+    @ColumnInfo val name: String,
+    @ColumnInfo val screen_name: String,
+    @ColumnInfo val unique_id: String,
+    @ColumnInfo val isProtected: Boolean,
+    @ColumnInfo val createdAt: Date,
+    @ColumnInfo var following: Boolean = false,
+    @ColumnInfo var notifications: Boolean = false,
+    @Embedded var info: UserInfo,
+    @Embedded var profile: UserProfile
+)
